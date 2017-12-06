@@ -5,7 +5,7 @@ Infrastructure for processing Serverless projects and creating one-click deploym
 ![Infra](assets/infra_v2.png?raw=true "Infrastructure Overview")
 
 ## Demo
-[![](https://v26mdkczs6.execute-api.us-east-1.amazonaws.com/dev/image?url=https://github.com/RafalWilinski/serverless-medium-text-to-speech)](https://v26mdkczs6.execute-api.us-east-1.amazonaws.com/dev/template?url=http://github.com/RafalWilinski/serverless-medium-text-to-speech)
+[![](https://kssb3rihj7.execute-api.us-east-1.amazonaws.com/tmc/image?url=https://github.com/RafalWilinski/serverless-medium-text-to-speech)](https://kssb3rihj7.execute-api.us-east-1.amazonaws.com/tmc/template?url=http://github.com/RafalWilinski/serverless-medium-text-to-speech)
 
 
 *Clicking button above will start deploy procedure of [serverless-medium-text-to-speech](https://github.com/RafalWilinski/serverless-medium-text-to-speech) project on your AWS Account via CloudFormation*
@@ -16,7 +16,7 @@ Goal of the project is to create a mechanism for 1-click deployments, similar to
 ## Adding to your own project
 In `README.md`, add following button/image:
 ```
-[![](https://kkcohgzei0.execute-api.us-east-1.amazonaws.com/dev/image?url=<YOUR_PROJECT_GITHUB_URL>)](https://kkcohgzei0.execute-api.us-east-1.amazonaws.com/dev/template?url=<YOUR_PROJECT_GITHUB_URL>)
+[![](https://kssb3rihj7.execute-api.us-east-1.amazonaws.com/tmc/image?url=<YOUR_PROJECT_GITHUB_URL>)](https://kssb3rihj7.execute-api.us-east-1.amazonaws.com/tmc/template?url=<YOUR_PROJECT_GITHUB_URL>)
 ```
 
 All the magic like building project, uploading artifacts or creating CloudFormation template is handled automatically!
@@ -28,7 +28,7 @@ You can add following params to URL in order to change build procedure:
 
 E.g.:
 ```url
-https://kkcohgzei0.execute-api.us-east-1.amazonaws.com/dev/image
+https://kssb3rihj7.execute-api.us-east-1.amazonaws.com/tmc/image
 ?url=http://github.com/RafalWilinski/serverless-medium-text-to-speech
 &before=npm%20run%20build
 &package=serverless%20package%20--stage%20prod
