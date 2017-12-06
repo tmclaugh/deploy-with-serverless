@@ -15,7 +15,7 @@ const createBucket = Bucket =>
 
 const returnReady = callback =>
   response.redirect(
-    "https://s3.amazonaws.com/deploy-with-serverless/button-ready.svg",
+    "https://s3.amazonaws.com/" + process.env.S3_BUCKET_NAME + "/button-ready.svg",
     callback
   );
 
@@ -40,10 +40,11 @@ module.exports.run = (event, context, callback) => {
 
         console.log(bucket);
 
+        const processName = process.env.INVOKED_FUNCTION_NAME
         createBucket(bucket)
           .then(() => {
             return Lambda.invoke({
-              FunctionName: "deploy-with-serverless-dev-handler",
+              FunctionName: processName,
               Payload: JSON.stringify({
                 url,
                 before,

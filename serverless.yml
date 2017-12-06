@@ -9,6 +9,7 @@ custom:
   jobDefinitionName: serverless-batch-job-definition
   keyPair: RafalWilinski-personal-ssh-key
 
+  stage: ${opt:stage, 'dev'}
   output:
     handler: scripts/deploy-proxy.handler
     file: user-data.json
@@ -38,6 +39,10 @@ functions:
   image-proxy:
     handler: functions/image-proxy.run
     memory: 128
+    environment:
+      INVOKED_FUNCTION_NAME: "${self:service}-${self:custom.stage, 'dev'}-handler"
+      S3_BUCKET_NAME:
+        Ref: DeployWithServerlessBucket
     events:
       - http:
           path: /image
@@ -46,6 +51,9 @@ functions:
   href:
     handler: functions/href.run
     memory: 128
+    environment:
+      S3_BUCKET_NAME:
+        Ref: DeployWithServerlessBucket
     events:
       - http:
           path: /template
@@ -59,7 +67,6 @@ resources:
     DeployWithServerlessBucket:
       Type: AWS::S3::Bucket
       Properties:
-        BucketName: deploy-with-serverless
         AccessControl: PublicRead
 
     # DynamoDB

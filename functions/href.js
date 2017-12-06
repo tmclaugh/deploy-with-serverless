@@ -5,7 +5,7 @@ const responses = require("./utils/responses");
 
 const return404 = callback =>
   responses.redirect(
-    "https://s3.amazonaws.com/deploy-with-serverless/404.html",
+    "https://s3.amazonaws.com/" + process.env.S3_BUCKET_NAME + "/404.html",
     callback
   );
 
@@ -21,7 +21,7 @@ module.exports.run = (event, context, callback) => {
 
       if (item.inProgress) {
         return responses.redirect(
-          "https://s3.amazonaws.com/deploy-with-serverless/in-progress.html",
+          "https://s3.amazonaws.com/" + process.env.S3_BUCKET_NAME + "/in-progress.html",
           callback
         );
       }
