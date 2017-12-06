@@ -24,9 +24,11 @@ module.exports.run = (event, context, callback) => {
 
   const timestamp = +new Date();
   const url = event.queryStringParameters.url;
-  const before = event.queryStringParameters.before;
+  // Don't allow passing arbitrary pre commands to execute.
+  const before = null;
   const pkg = event.queryStringParameters.package;
-  const after = event.queryStringParameters.after;
+  // Don't allow passing arbitrary post commands to execute.
+  const after = null;
   const bucket = `${extractProjectName(url)}-${timestamp}`;
 
   DynamoDB.get({
