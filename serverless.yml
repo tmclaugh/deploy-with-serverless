@@ -286,6 +286,11 @@ resources:
                     - ecr:*
                     - dynamodb:PutItem
                     - dynamodb:DescribeTable
+    ServerlessBatchInstanceRole:
+      Type: AWS::IAM::InstanceProfile
+      Properties:
+        Roles:
+          - Ref: ServerlessBatchServiceRole
 
     # AWS Batch
     ServerlessBatchComputeEnvironment:
@@ -305,7 +310,8 @@ resources:
           Ec2KeyPair: ${self:custom.keyPair}
           Type: "EC2"
           ImageId: ami-ec33cc96 # ECS Optimized AMI
-          InstanceRole: ecsInstanceRole
+          InstanceRole:
+            Ref: ServerlessBatchInstanceRole
           InstanceTypes:
             - m3.medium
           SecurityGroupIds:
