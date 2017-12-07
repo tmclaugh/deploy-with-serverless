@@ -5,15 +5,15 @@
   "main": "index.js",
   "scripts": {
     "deploy": "serverless deploy",
-    "gen-passwd": "./scripts/gen-passwd.sh",
-    "deploy-imgs": "aws s3 cp ./assets s3://deploy-with-serverless --acl public-read --recursive --exclude \"*.png\"",
-    "deploy-static": "aws s3 cp ./static s3://deploy-with-serverless --acl public-read --recursive",
-    "deploy-assets": "npm run deploy-imgs && npm run deploy-static"
+    "gen-passwd": "./scripts/gen-passwd.sh"
   },
   "author": "Rafal Wilinski <rwilinski.me>",
   "license": "MIT",
   "devDependencies": {
     "aws-sdk": "^2.130.0",
     "serverless-stack-output": "^0.2.0"
+  },
+  "dependencies": {
+    "serverless-sync-s3buckets": "^1.0.1"
   }
 }

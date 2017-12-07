@@ -2,6 +2,8 @@ service: deploy-with-serverless
 
 plugins:
   - serverless-stack-output
+  # FIXME: Plugin does not respect profile determined at runtime.
+  - serverless-sync-s3buckets
 
 custom:
   queueName: serverless-projects-batch-queue
@@ -10,6 +12,11 @@ custom:
   keyPair: RafalWilinski-personal-ssh-key
 
   stage: ${opt:stage, 'dev'}
+
+  syncS3Buckets:
+    - bucketRef: DeployWithServerlessBucket
+      localDir: static
+
   output:
     handler: scripts/deploy-proxy.handler
     file: user-data.json
