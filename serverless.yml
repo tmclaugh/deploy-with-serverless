@@ -17,7 +17,7 @@ custom:
   stage: ${opt:stage, 'dev'}
 
   syncS3Buckets:
-    - bucketRef: DeployWithServerlessBucket
+    - bucketRef: DeployWithServerlessStaticBucket
       localDir: static
 
   output:
@@ -52,7 +52,7 @@ functions:
     environment:
       INVOKED_FUNCTION_NAME: "${self:service}-${self:custom.stage, 'dev'}-handler"
       S3_BUCKET_NAME:
-        Ref: DeployWithServerlessBucket
+        Ref: DeployWithServerlessStaticBucket
     events:
       - http:
           path: /image
@@ -63,7 +63,7 @@ functions:
     memory: 128
     environment:
       S3_BUCKET_NAME:
-        Ref: DeployWithServerlessBucket
+        Ref: DeployWithServerlessStaticBucket
     events:
       - http:
           path: /template
@@ -74,6 +74,12 @@ resources:
   Resources:
 
     # S3
+    # FIXME: There's a bug with object access.
+    DeployWithServerlessStaticBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        AccessControl: PublicRead
+
     DeployWithServerlessBucket:
       Type: AWS::S3::Bucket
       Properties:
@@ -202,7 +208,7 @@ resources:
                 - "ecr:UploadLayerPart"
                 - "ecr:CompleteLayerUpload"
       DependsOn: ServerlessBatchUser
-    
+
     # IAM
     ServerlessBatchUser:
       Type: AWS::IAM::User
