@@ -9,7 +9,10 @@ custom:
   queueName: serverless-projects-batch-queue
   projectsTableName: serverless-projects
   jobDefinitionName: serverless-batch-job-definition
-  keyPair: RafalWilinski-personal-ssh-key
+  # FIXME: https://binx.io/blog/2017/10/25/deploying-private-key-pairs-with-aws-cloudformation/
+  # FIXME: Document this in README.md; may even be able to remove this
+  # entirely at risk of not being able to debug the cluster.
+  keyPair: serverless-deploy-${self:custom.stage}
 
   stage: ${opt:stage, 'dev'}
 
