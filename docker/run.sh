@@ -14,6 +14,9 @@ cd src
 echo 'Installing dependencies...'
 npm install
 
+# FIXME: Remove from batch job if we're not going to use this. If we're going
+# to use this then we need to ensure the handler.js lambda  has access
+# controls.
 # Apply optional build commands like babel or webpack
 # eval $BEFORE_CMD
 
@@ -22,8 +25,11 @@ python ../change-deployment-bucket.py $BUCKET
 
 # Run `serverless package --stage dev`, this might be overriden
 # eval $PACKAGE_CMD
-serverless package --stage dev
+serverless package --stage dev -v || exit 1
 
+# FIXME: Remove from batch job if we're not going to use this. If we're going
+# to use this then we need to ensure the handler.js lambda  has access
+# controls.
 # eval $AFTER_CMD
 
 # Go to artifacts & compiled Cloudformation template path
