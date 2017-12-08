@@ -26,11 +26,11 @@ module.exports.run = (event, context, callback) => {
         );
       }
 
+      // FIXME: Make region variable.
       const url = [
         "https://console.aws.amazon.com/cloudformation/home?region=us-east-1",
-        `#/stacks/new?stackName=${item.name}`,
-        `&templateURL=https://s3.amazonaws.com/${item.bucket}`,
-        "/cloudformation-template-update-stack.json"
+        `#/stacks/new?stackName=${item.service_name}`,
+        `&templateURL=${item.template_url}`
       ].join("");
 
       return responses.redirect(url, callback);

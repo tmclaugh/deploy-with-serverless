@@ -51,8 +51,10 @@ functions:
     memory: 128
     environment:
       INVOKED_FUNCTION_NAME: "${self:service}-${self:custom.stage, 'dev'}-handler"
-      S3_BUCKET_NAME:
+      S3_STATIC_BUCKET_NAME:
         Ref: DeployWithServerlessStaticBucket
+      S3_DEPLOY_BUCKET_NAME:
+        Ref: DeployWithServerlessBucket
     events:
       - http:
           path: /image
@@ -430,4 +432,4 @@ resources:
         Fn::GetAtt:
           - ServerlessBatchUserKeys
           - SecretAccessKey
-      
+

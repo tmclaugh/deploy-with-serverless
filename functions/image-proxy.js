@@ -15,7 +15,7 @@ const createBucket = Bucket =>
 
 const returnReady = callback =>
   response.redirect(
-    "https://s3.amazonaws.com/" + process.env.S3_BUCKET_NAME + "/button-ready.svg",
+    "https://s3.amazonaws.com/" + process.env.S3_STATIC_BUCKET_NAME + "/button-ready.svg",
     callback
   );
 
@@ -29,7 +29,7 @@ module.exports.run = (event, context, callback) => {
   const pkg = event.queryStringParameters.package;
   // Don't allow passing arbitrary post commands to execute.
   const after = null;
-  const bucket = `${extractProjectName(url)}-${timestamp}`;
+  const bucket = process.env.S3_DEPLOY_BUCKET_NAME;
 
   DynamoDB.get({
     url
