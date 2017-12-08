@@ -240,7 +240,6 @@ resources:
     ServerlessBatchServiceRole: # Standard AWS Batch Role
       Type: AWS::IAM::Role
       Properties:
-        RoleName: ServerlessBatchServiceRole
         AssumeRolePolicyDocument:
           Version: '2012-10-17'
           Statement:
@@ -295,11 +294,74 @@ resources:
                     - ecr:*
                     - dynamodb:PutItem
                     - dynamodb:DescribeTable
-    ServerlessBatchInstanceRole:
+    ServerlessBatchEcsRole: # Standard AWS Batch Role
+      Type: AWS::IAM::Role
+      Properties:
+        AssumeRolePolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Principal:
+                Service:
+                  - ec2.amazonaws.com
+              Action: sts:AssumeRole
+        ManagedPolicyArns:
+          - arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role
+    ServerlessBatchContainerRole: # Standard AWS Batch Role
+      Type: AWS::IAM::Role
+      Properties:
+        AssumeRolePolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Principal:
+                Service:
+                  - ecs-tasks.amazonaws.com
+              Action: sts:AssumeRole
+        Policies:
+          - PolicyName: GetBucketInfo
+            PolicyDocument:
+              Version: '2012-10-17'
+              Statement:
+                - Effect: Allow
+                  Action:
+                    - s3:GetBucketLocation
+                  Resource:
+                    Fn::GetAtt:
+                      - DeployWithServerlessBucket
+                      - Arn
+          - PolicyName: PutBuildArtifact
+            PolicyDocument:
+              Version: '2012-10-17'
+              Statement:
+                - Effect: Allow
+                  Action:
+                    - s3:PutObject
+                    - s3:PutObjectAcl
+                  Resource:
+                    Fn::Join:
+                      - '/'
+                      - - Fn::GetAtt:
+                            - DeployWithServerlessBucket
+                            - Arn
+                        - '*'
+          - PolicyName: PutDynamoDbRecord
+            PolicyDocument:
+              Version: '2012-10-17'
+              Statement:
+                - Effect: Allow
+                  Action:
+                    - dynamodb:PutItem
+                  Resource:
+                    Fn::GetAtt:
+                      - ServerlessTemplatesTable
+                      - Arn
+
+    ServerlessBatchInstanceProfile:
       Type: AWS::IAM::InstanceProfile
       Properties:
         Roles:
-          - Ref: ServerlessBatchServiceRole
+          - Ref: ServerlessBatchEcsRole
 
     # AWS Batch
     ServerlessBatchComputeEnvironment:
@@ -320,7 +382,7 @@ resources:
           Type: "EC2"
           ImageId: ami-ec33cc96 # ECS Optimized AMI
           InstanceRole:
-            Ref: ServerlessBatchInstanceRole
+            Ref: ServerlessBatchInstanceProfile
           InstanceTypes:
             - m3.medium
           SecurityGroupIds:
@@ -343,6 +405,10 @@ resources:
         Type: container
         JobDefinitionName: ${self:custom.jobDefinitionName}
         ContainerProperties:
+          JobRoleArn:
+            Fn::GetAtt:
+              - ServerlessBatchContainerRole
+              - Arn
           Memory: 1024
           Privileged: true
           Vcpus: 1
