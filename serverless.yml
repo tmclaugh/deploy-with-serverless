@@ -45,10 +45,10 @@ provider:
 functions:
   handler:
     handler: functions/handler.run
-    memory: 128
+    memorySize: 128
   image-proxy:
     handler: functions/image-proxy.run
-    memory: 128
+    memorySize: 128
     environment:
       INVOKED_FUNCTION_NAME: "${self:service}-${self:custom.stage, 'dev'}-handler"
       S3_STATIC_BUCKET_NAME:
@@ -62,7 +62,7 @@ functions:
           cors: true
   href:
     handler: functions/href.run
-    memory: 128
+    memorySize: 128
     environment:
       S3_BUCKET_NAME:
         Ref: DeployWithServerlessStaticBucket
