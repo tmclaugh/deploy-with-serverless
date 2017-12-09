@@ -48,7 +48,7 @@ functions:
     memorySize: 128
   image-proxy:
     handler: functions/image-proxy.run
-    memorySize: 128
+    memorySize: 512
     environment:
       INVOKED_FUNCTION_NAME: "${self:service}-${self:custom.stage, 'dev'}-handler"
       S3_STATIC_BUCKET_NAME:
