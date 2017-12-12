@@ -35,7 +35,11 @@ module.exports.run = (event, context, callback) => {
     url
   })
     .then(item => {
+      // FIXME: This should probably be removed since the endpoint lets us
+      // inject arbitrary commands.  Instead we should assume something else
+      // has called the build hook.
       if (!item) {
+
         console.log("Project not found, submitting job...");
 
         console.log(bucket);
